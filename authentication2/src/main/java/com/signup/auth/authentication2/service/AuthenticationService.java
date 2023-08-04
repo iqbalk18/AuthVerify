@@ -44,7 +44,7 @@ public class AuthenticationService {
         var jwtToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
         saveUserToken(savedUser, jwtToken);
-        String link = "http://localhost:8080/api/v1/registration/confirm?token=" + jwtToken;
+        String link = "http://localhost:8080/api/v1/auth/confirm?token=" + jwtToken;
         emailSender.send(request.getEmail(), buildVerificationEmail(savedUser.getFirstname(), link));
 
         return AuthenticationResponse.builder()
