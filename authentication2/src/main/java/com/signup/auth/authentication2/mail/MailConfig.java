@@ -1,4 +1,4 @@
-package com.signup.auth.authentication2.config;
+package com.signup.auth.authentication2.mail;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
