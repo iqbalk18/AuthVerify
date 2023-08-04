@@ -28,6 +28,7 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final EmailService emailService;
 
     public AuthenticationResponse register(RegisterRequest request) {
         var user = User.builder()
@@ -41,6 +42,8 @@ public class AuthenticationService {
         var jwtToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
         saveUserToken(savedUser, jwtToken);
+        String verificationLink = "http://localhost:8080/api/v1/registration/confirm?token=" + jwtToken;
+        emailService.sendEmail(savedUser.getEmail(), "Verifikasi Email", "Klik link berikut untuk verifikasi email: " + verificationLink);
         return AuthenticationResponse.builder()
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
