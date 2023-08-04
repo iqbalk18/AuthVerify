@@ -12,9 +12,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class EmailService implements EmailSender{
+public class MailService implements MailSender {
     private final static Logger LOGGER = LoggerFactory
-            .getLogger(EmailService.class);
+            .getLogger(MailService.class);
 
     private final JavaMailSender mailSender;
 

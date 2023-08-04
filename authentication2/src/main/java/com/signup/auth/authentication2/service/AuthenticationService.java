@@ -2,10 +2,9 @@ package com.signup.auth.authentication2.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.signup.auth.authentication2.entity.User;
-import com.signup.auth.authentication2.mail.EmailService;
 import com.signup.auth.authentication2.model.AuthenticationRequest;
 import com.signup.auth.authentication2.model.AuthenticationResponse;
-import com.signup.auth.authentication2.mail.EmailSender;
+import com.signup.auth.authentication2.mail.MailSender;
 import com.signup.auth.authentication2.model.RegisterRequest;
 import com.signup.auth.authentication2.repository.UserRepository;
 import com.signup.auth.authentication2.token.Token;
@@ -30,7 +29,7 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
-    private final EmailSender emailSender;
+    private final MailSender mailSender;
 
     public AuthenticationResponse register(RegisterRequest request) {
         var user = User.builder()
@@ -45,7 +44,7 @@ public class AuthenticationService {
         var refreshToken = jwtService.generateRefreshToken(user);
         saveUserToken(savedUser, jwtToken);
         String link = "http://localhost:8080/api/v1/auth/confirm?token=" + jwtToken;
-        emailSender.send(request.getEmail(), buildVerificationEmail(savedUser.getFirstname(), link));
+        mailSender.send(request.getEmail(), buildVerificationEmail(savedUser.getFirstname(), link));
 
         return AuthenticationResponse.builder()
                 .accessToken(jwtToken)
