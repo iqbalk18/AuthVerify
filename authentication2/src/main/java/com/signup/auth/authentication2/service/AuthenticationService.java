@@ -126,71 +126,77 @@ public class AuthenticationService {
     }
 
     private String buildVerificationEmail(String name, String link) {
-        return "<div style=\"font-family:Helvetica,Arial,sans-serif;font-size:16px;margin:0;color:#0b0c0c\">\n" +
-                "\n" +
-                "<span style=\"display:none;font-size:1px;color:#fff;max-height:0\"></span>\n" +
-                "\n" +
-                "  <table role=\"presentation\" width=\"100%\" style=\"border-collapse:collapse;min-width:100%;width:100%!important\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n" +
-                "    <tbody><tr>\n" +
-                "      <td width=\"100%\" height=\"53\" bgcolor=\"#0b0c0c\">\n" +
-                "        \n" +
-                "        <table role=\"presentation\" width=\"100%\" style=\"border-collapse:collapse;max-width:580px\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" align=\"center\">\n" +
-                "          <tbody><tr>\n" +
-                "            <td width=\"70\" bgcolor=\"#0b0c0c\" valign=\"middle\">\n" +
-                "                <table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"border-collapse:collapse\">\n" +
-                "                  <tbody><tr>\n" +
-                "                    <td style=\"padding-left:10px\">\n" +
-                "                  \n" +
-                "                    </td>\n" +
-                "                    <td style=\"font-size:28px;line-height:1.315789474;Margin-top:4px;padding-left:10px\">\n" +
-                "                      <span style=\"font-family:Helvetica,Arial,sans-serif;font-weight:700;color:#ffffff;text-decoration:none;vertical-align:top;display:inline-block\">Confirm your email</span>\n" +
-                "                    </td>\n" +
-                "                  </tr>\n" +
-                "                </tbody></table>\n" +
-                "              </a>\n" +
-                "            </td>\n" +
-                "          </tr>\n" +
-                "        </tbody></table>\n" +
-                "        \n" +
-                "      </td>\n" +
-                "    </tr>\n" +
-                "  </tbody></table>\n" +
-                "  <table role=\"presentation\" class=\"m_-6186904992287805515content\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"border-collapse:collapse;max-width:580px;width:100%!important\" width=\"100%\">\n" +
-                "    <tbody><tr>\n" +
-                "      <td width=\"10\" height=\"10\" valign=\"middle\"></td>\n" +
-                "      <td>\n" +
-                "        \n" +
-                "                <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"border-collapse:collapse\">\n" +
-                "                  <tbody><tr>\n" +
-                "                    <td bgcolor=\"#1D70B8\" width=\"100%\" height=\"10\"></td>\n" +
-                "                  </tr>\n" +
-                "                </tbody></table>\n" +
-                "        \n" +
-                "      </td>\n" +
-                "      <td width=\"10\" valign=\"middle\" height=\"10\"></td>\n" +
-                "    </tr>\n" +
-                "  </tbody></table>\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "  <table role=\"presentation\" class=\"m_-6186904992287805515content\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"border-collapse:collapse;max-width:580px;width:100%!important\" width=\"100%\">\n" +
-                "    <tbody><tr>\n" +
-                "      <td height=\"30\"><br></td>\n" +
-                "    </tr>\n" +
-                "    <tr>\n" +
-                "      <td width=\"10\" valign=\"middle\"><br></td>\n" +
-                "      <td style=\"font-family:Helvetica,Arial,sans-serif;font-size:19px;line-height:1.315789474;max-width:560px\">\n" +
-                "        \n" +
-                "            <p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\">Hi " + name + ",</p><p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\"> Thank you for registering. Please click on the below link to activate your account: </p><blockquote style=\"Margin:0 0 20px 0;border-left:10px solid #b1b4b6;padding:15px 0 0.1px 15px;font-size:19px;line-height:25px\"><p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\"> <a href=\"" + link + "\">Activate Now</a> </p></blockquote>\n Link will expire in 15 minutes. <p>See you soon</p>" +
-                "        \n" +
-                "      </td>\n" +
-                "      <td width=\"10\" valign=\"middle\"><br></td>\n" +
-                "    </tr>\n" +
-                "    <tr>\n" +
-                "      <td height=\"30\"><br></td>\n" +
-                "    </tr>\n" +
-                "  </tbody></table><div class=\"yj6qo\"></div><div class=\"adL\">\n" +
-                "\n" +
-                "</div></div>";
+        return "<!DOCTYPE html>\n" +
+                "<html>\n" +
+                "<head>\n" +
+                "    <meta charset=\"UTF-8\">\n" +
+                "    <title>Confirm your email</title>\n" +
+                "    <style>\n" +
+                "        body {\n" +
+                "            font-family: Helvetica, Arial, sans-serif;\n" +
+                "            font-size: 16px;\n" +
+                "            margin: 0;\n" +
+                "            color: #0b0c0c;\n" +
+                "        }\n" +
+                "        .container {\n" +
+                "            max-width: 580px;\n" +
+                "            margin: 0 auto;\n" +
+                "            padding: 20px;\n" +
+                "            background-color: #f0f0f0;\n" +
+                "            border-radius: 10px;\n" +
+                "        }\n" +
+                "        .logo {\n" +
+                "            text-align: center;\n" +
+                "            margin-bottom: 20px;\n" +
+                "        }\n" +
+                "        .logo img {\n" +
+                "            max-width: 200px;\n" +
+                "        }\n" +
+                "        .header {\n" +
+                "            font-size: 24px;\n" +
+                "            font-weight: 700;\n" +
+                "            margin-bottom: 20px;\n" +
+                "            text-align: center;\n" +
+                "        }\n" +
+                "        .confirmation-text {\n" +
+                "            font-size: 18px;\n" +
+                "            margin-bottom: 20px;\n" +
+                "        }\n" +
+                "        .confirmation-link {\n" +
+                "            display: block;\n" +
+                "            width: 200px;\n" +
+                "            margin: 20px auto;\n" +
+                "            padding: 15px;\n" +
+                "            background-color: #6c63ff; /* Change to purple color */\n" +
+                "            color: #ffffff;\n" +
+                "            text-align: center;\n" +
+                "            text-decoration: none;\n" +
+                "            border-radius: 20px; /* Rounded corners */\n" +
+                "            font-size: 16px;\n" +
+                "            font-weight: 700;\n" +
+                "            box-shadow: 0 2px 4px rgba(108, 99, 255, 0.2); /* Subtle box shadow */\n" +
+                "        }\n" +
+                "        .footer {\n" +
+                "            font-size: 14px;\n" +
+                "            text-align: center;\n" +
+                "            margin-top: 20px;\n" +
+                "        }\n" +
+                "    </style>\n" +
+                "</head>\n" +
+                "<body>\n" +
+                "    <div class=\"container\">\n" +
+                "        <div class=\"logo\">\n" +
+                "            <img src=\"https://example.com/logo.png\" alt=\"Logo\">\n" +
+                "        </div>\n" +
+                "        <div class=\"header\">Confirm your email</div>\n" +
+                "        <div class=\"confirmation-text\">Hi " + name + ",</div>\n" +
+                "        <div class=\"confirmation-text\">Thank you for registering. Please click on the below link to activate your account:</div>\n" +
+                "        <div>\n" +
+                "            <a class=\"confirmation-link\" href=\"" + link + "\">Activate Now</a>\n" +
+                "        </div>\n" +
+                "        <div class=\"footer\">Link will expire in 15 minutes. See you soon!</div>\n" +
+                "    </div>\n" +
+                "</body>\n" +
+                "</html>";
     }
 }
