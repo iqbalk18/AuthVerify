@@ -11,10 +11,7 @@ import com.signup.auth.authentication2.repository.UserRepository;
 import com.signup.auth.authentication2.token.Token;
 import com.signup.auth.authentication2.token.TokenRepository;
 import com.signup.auth.authentication2.token.TokenType;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,7 +19,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 
 @Service
@@ -46,8 +44,9 @@ public class AuthenticationService {
                 .emailConfirmed(false)
                 .build();
         var savedUser = repository.save(user);
+        var expirationTime = LocalDateTime.now().plusMinutes(1);
         var jwtToken = jwtService.generateToken(user);
-        saveUserToken(savedUser, jwtToken);
+        saveUserToken(savedUser, jwtToken, expirationTime);
         String link = "http://localhost:8080/api/v1/auth/confirm?token=" + jwtToken;
         mailSender.send(request.getEmail(), buildVerificationEmail(savedUser.getFirstname(), link));
         return AuthenticationResponse.builder()
@@ -70,20 +69,23 @@ public class AuthenticationService {
         );
 
         var jwtToken = jwtService.generateToken(user);
+        var existingToken = tokenRepository.findByToken(jwtToken);
+        LocalDateTime expirationTime = existingToken.isPresent() ? existingToken.get().getExpirationTime() : null;
         revokeAllUserTokens(user);
-        saveUserToken(user, jwtToken);
+        saveUserToken(user, jwtToken, expirationTime);
         return AuthenticationResponse.builder()
                 .accessToken(jwtToken)
                 .build();
     }
 
-    private void saveUserToken(User user, String jwtToken) {
+    private void saveUserToken(User user, String jwtToken, LocalDateTime expirationTime) {
         var token = Token.builder()
                 .user(user)
                 .token(jwtToken)
                 .tokenType(TokenType.BEARER)
                 .expired(false)
                 .revoked(false)
+                .expirationTime(expirationTime)
                 .build();
         tokenRepository.save(token);
     }
@@ -108,9 +110,15 @@ public class AuthenticationService {
             if (user == null) {
                 return false;
             }
+            Date expirationDate = jwtService.extractExpiration(token);
+
+            LocalDateTime expirationTime = expirationDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+
+            if (expirationTime == null && expirationTime.isBefore(LocalDateTime.now())) {
+                return false;
+            }
             user.setEmailConfirmed(true);
             repository.save(user);
-
             return true;
         } catch (Exception e) {
             return false;

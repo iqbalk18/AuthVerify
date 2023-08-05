@@ -43,8 +43,6 @@ public class JwtService {
 
     public UserDetails extractUserDetails(String token) {
         String username = extractUsername(token);
-        // Assuming you have a method to fetch user details from the database based on the username
-        // You can implement this method in your UserRepository or any appropriate service
         UserDetails userDetails = userRepository.findByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         return userDetails;
@@ -81,8 +79,12 @@ public class JwtService {
         return extractExpiration(token).before(new Date());
     }
 
-    private Date extractExpiration(String token) {
+    public Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
+    }
+
+    public Date extractExpirationTime(String token) {
+        return extractExpiration(token);
     }
 
     private Claims extractAllClaims(String token) {

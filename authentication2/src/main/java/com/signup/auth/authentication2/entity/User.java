@@ -40,7 +40,12 @@ public class User implements UserDetails {
     @Column(name = "email_confirmed")
     private boolean emailConfirmed;
 
+    @Column(name = "registration_time")
     private Date registrationTime;
+
+    @Column(name = "expirationTime")
+    private LocalDateTime expirationTime;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
