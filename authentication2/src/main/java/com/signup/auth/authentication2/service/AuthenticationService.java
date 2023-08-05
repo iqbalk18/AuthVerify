@@ -1,6 +1,7 @@
 package com.signup.auth.authentication2.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.signup.auth.authentication2.config.EmailNotConfirmedException;
 import com.signup.auth.authentication2.entity.User;
 import com.signup.auth.authentication2.model.AuthenticationRequest;
 import com.signup.auth.authentication2.model.AuthenticationResponse;
@@ -17,6 +18,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -51,14 +53,19 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
+        var user = repository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        if (!user.isEmailConfirmed()) {
+            throw new EmailNotConfirmedException("Email has not been confirmed");
+        }
+
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
                         request.getPassword()
                 )
         );
-        var user = repository.findByEmail(request.getEmail())
-                .orElseThrow();
+
         var jwtToken = jwtService.generateToken(user);
         revokeAllUserTokens(user);
         saveUserToken(user, jwtToken);
