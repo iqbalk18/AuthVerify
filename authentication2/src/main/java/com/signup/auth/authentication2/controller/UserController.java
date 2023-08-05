@@ -1,13 +1,16 @@
 package com.signup.auth.authentication2.controller;
 
+import com.signup.auth.authentication2.config.EmailNotConfirmedException;
 import com.signup.auth.authentication2.model.AuthenticationRequest;
 import com.signup.auth.authentication2.model.AuthenticationResponse;
 import com.signup.auth.authentication2.model.RegisterRequest;
 import com.signup.auth.authentication2.service.AuthenticationService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+
+
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -37,9 +40,14 @@ public class UserController {
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticationResponse> authenticate(
-            @RequestBody AuthenticationRequest request
-    ) {
-        return ResponseEntity.ok(service.authenticate(request));
+    public ResponseEntity<?> authenticate(@RequestBody AuthenticationRequest request) {
+        try {
+            AuthenticationResponse response = service.authenticate(request);
+            return ResponseEntity.ok(response);
+        } catch (EmailNotConfirmedException ex) {
+            return ResponseEntity.badRequest().body("Email has not been confirmed");
+        } catch (AuthenticationException ex) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Email and Password");
+        }
     }
 }
