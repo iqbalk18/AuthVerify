@@ -4,7 +4,9 @@ import com.signup.auth.authentication2.token.Token;
 import jakarta.persistence.*;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -37,6 +39,8 @@ public class User implements UserDetails {
 
     @Column(name = "email_confirmed")
     private boolean emailConfirmed;
+
+    private Date registrationTime;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -79,5 +83,13 @@ public class User implements UserDetails {
 
     public void setEmailConfirmed(boolean emailConfirmed) {
         this.emailConfirmed = emailConfirmed;
+    }
+
+    public Date getRegistrationTime() {
+        return registrationTime;
+    }
+
+    public void setRegistrationTime(Date registrationTime) {
+        this.registrationTime = registrationTime;
     }
 }
