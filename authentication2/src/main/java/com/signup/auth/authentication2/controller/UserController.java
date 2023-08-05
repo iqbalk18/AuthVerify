@@ -14,7 +14,6 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/v1/auth")
-
 @RequiredArgsConstructor
 @CrossOrigin
 public class UserController {
@@ -26,6 +25,17 @@ public class UserController {
     ) {
         return ResponseEntity.ok(service.register(request));
     }
+
+    @GetMapping("/confirm")
+    public ResponseEntity<String> confirm(@RequestParam String token) {
+        boolean isConfirmed = service.confirmEmail(token);
+        if (isConfirmed) {
+            return ResponseEntity.ok("Email confirmed successfully. You can now login.");
+        } else {
+            return ResponseEntity.badRequest().body("Invalid token or token expired.");
+        }
+    }
+
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticate(
             @RequestBody AuthenticationRequest request

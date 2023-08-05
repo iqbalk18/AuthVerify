@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -86,6 +87,24 @@ public class AuthenticationService {
             token.setRevoked(true);
         });
         tokenRepository.saveAll(validUserTokens);
+    }
+
+    public boolean confirmEmail(String token) {
+
+        try {
+            UserDetails userDetails = jwtService.extractUserDetails(token);
+
+            User user = repository.findByEmail(userDetails.getUsername()).orElse(null);
+            if (user == null) {
+                return false;
+            }
+            user.setEmailConfirmed(true);
+            repository.save(user);
+
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     private String buildVerificationEmail(String name, String link) {

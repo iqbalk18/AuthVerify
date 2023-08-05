@@ -1,5 +1,7 @@
 package com.signup.auth.authentication2.service;
 
+import com.signup.auth.authentication2.entity.User;
+import com.signup.auth.authentication2.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -11,12 +13,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class JwtService {
+
+    private final UserRepository userRepository;
 
     @Value("${application.security.jwt.secret-key}")
     private String secretKey;
@@ -34,14 +41,18 @@ public class JwtService {
         return claimsResolver.apply(claims);
     }
 
-    public String generateToken(UserDetails userDetails) {
-        return generateToken(new HashMap<>(), userDetails);
+    public UserDetails extractUserDetails(String token) {
+        String username = extractUsername(token);
+        // Assuming you have a method to fetch user details from the database based on the username
+        // You can implement this method in your UserRepository or any appropriate service
+        UserDetails userDetails = userRepository.findByEmail(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return userDetails;
     }
 
-    public String generateToken(
-            Map<String, Object> extraClaims,
-            UserDetails userDetails
-    ) {
+    public String generateToken(UserDetails userDetails) {
+        Map<String, Object> extraClaims = new HashMap<>();
+        extraClaims.put("emailConfirmed", ((User) userDetails).isEmailConfirmed());
         return buildToken(extraClaims, userDetails, jwtExpiration);
     }
 

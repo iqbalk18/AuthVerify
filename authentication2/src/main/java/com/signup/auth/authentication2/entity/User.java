@@ -1,14 +1,9 @@
 package com.signup.auth.authentication2.entity;
 
 import com.signup.auth.authentication2.token.Token;
+import jakarta.persistence.*;
 import org.springframework.security.core.userdetails.UserDetails;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+
 import java.util.Collection;
 import java.util.List;
 
@@ -39,6 +34,9 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "user")
     private List<Token> tokens;
+
+    @Column(name = "email_confirmed")
+    private boolean emailConfirmed;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -73,5 +71,13 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public boolean isEmailConfirmed() {
+        return emailConfirmed;
+    }
+
+    public void setEmailConfirmed(boolean emailConfirmed) {
+        this.emailConfirmed = emailConfirmed;
     }
 }
