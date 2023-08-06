@@ -1,7 +1,5 @@
 package com.signup.auth.authentication2.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.signup.auth.authentication2.config.EmailNotConfirmedException;
 import com.signup.auth.authentication2.config.TokenExpiredException;
 import com.signup.auth.authentication2.config.TokenNotFoundException;
 import com.signup.auth.authentication2.entity.User;
@@ -16,16 +14,15 @@ import com.signup.auth.authentication2.token.TokenRepository;
 import com.signup.auth.authentication2.token.TokenType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
+
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -55,6 +52,7 @@ public class AuthenticationService {
                     .email(request.getEmail())
                     .password(passwordEncoder.encode(request.getPassword()))
                     .role(request.getRole())
+                    .enabled(false)
                     .build();
             repository.save(newUser);
         }
@@ -76,6 +74,7 @@ public class AuthenticationService {
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         var user = repository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
 
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -129,6 +128,8 @@ public class AuthenticationService {
         }
 
         confirmationTokenService.setConfirmedAt(token);
+        User user = confirmationToken.getUser();
+        user.setEnabled(true);
         jwtService.enableAppUser(confirmationToken.getUser().getEmail());
         return "confirmed";
     }
