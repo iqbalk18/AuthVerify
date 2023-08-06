@@ -16,6 +16,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 @Builder
@@ -38,8 +39,13 @@ public class Token {
 
     public boolean expired;
 
-    @Column(name = "expirationTime")
-    private LocalDateTime expirationTime;
+    @Column(nullable = false)
+    private LocalDateTime expiresAt;
+
+    @Column(nullable = false)
+    private LocalDateTime createAt;
+
+    private LocalDateTime confirmedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

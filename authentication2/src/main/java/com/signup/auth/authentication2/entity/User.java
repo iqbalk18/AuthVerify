@@ -30,22 +30,12 @@ public class User implements UserDetails {
     private String lastname;
     private String email;
     private String password;
-
     @Enumerated(EnumType.STRING)
     private Role role;
-
+    private Boolean locked = false;
+    private Boolean enabled = false;
     @OneToMany(mappedBy = "user")
     private List<Token> tokens;
-
-    @Column(name = "email_confirmed")
-    private boolean emailConfirmed;
-
-    @Column(name = "registration_time")
-    private Date registrationTime;
-
-    @Column(name = "expirationTime")
-    private LocalDateTime expirationTime;
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -69,7 +59,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return !locked;
     }
 
     @Override
@@ -79,22 +69,6 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
-    }
-
-    public boolean isEmailConfirmed() {
-        return emailConfirmed;
-    }
-
-    public void setEmailConfirmed(boolean emailConfirmed) {
-        this.emailConfirmed = emailConfirmed;
-    }
-
-    public Date getRegistrationTime() {
-        return registrationTime;
-    }
-
-    public void setRegistrationTime(Date registrationTime) {
-        this.registrationTime = registrationTime;
+        return enabled;
     }
 }

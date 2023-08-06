@@ -29,14 +29,9 @@ public class UserController {
         return ResponseEntity.ok(service.register(request));
     }
 
-    @GetMapping("/confirm")
-    public ResponseEntity<String> confirm(@RequestParam String token) {
-        boolean isConfirmed = service.confirmEmail(token);
-        if (isConfirmed) {
-            return ResponseEntity.ok("Email confirmed successfully. You can now login.");
-        } else {
-            return ResponseEntity.badRequest().body("Invalid token or token expired.");
-        }
+    @GetMapping(path = "confirm")
+    public String confirm(@RequestParam("token") String token) {
+        return service.confirmToken(token);
     }
 
     @PostMapping("/authenticate")

@@ -2,6 +2,7 @@ package com.signup.auth.authentication2.service;
 
 import com.signup.auth.authentication2.entity.User;
 import com.signup.auth.authentication2.repository.UserRepository;
+import com.signup.auth.authentication2.token.Token;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -48,9 +49,12 @@ public class JwtService {
         return userDetails;
     }
 
+    public int enableAppUser(String email) {
+        return userRepository.enableAppUser(email);
+    }
+
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> extraClaims = new HashMap<>();
-        extraClaims.put("emailConfirmed", ((User) userDetails).isEmailConfirmed());
         return buildToken(extraClaims, userDetails, jwtExpiration);
     }
 
