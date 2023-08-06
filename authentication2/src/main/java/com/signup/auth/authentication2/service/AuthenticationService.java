@@ -2,6 +2,8 @@ package com.signup.auth.authentication2.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.signup.auth.authentication2.config.EmailNotConfirmedException;
+import com.signup.auth.authentication2.config.TokenExpiredException;
+import com.signup.auth.authentication2.config.TokenNotFoundException;
 import com.signup.auth.authentication2.entity.User;
 import com.signup.auth.authentication2.model.AuthenticationRequest;
 import com.signup.auth.authentication2.model.AuthenticationResponse;
@@ -24,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -37,25 +40,38 @@ public class AuthenticationService {
     private final ConfirmationTokenService confirmationTokenService;
 
     public AuthenticationResponse register(RegisterRequest request) {
-        if (repository.findByEmail(request.getEmail()).isPresent()) {
-            throw new IllegalStateException("Email already registered");
+        Optional<User> existingUserOptional = repository.findByEmail(request.getEmail());
+        if (existingUserOptional.isPresent()) {
+            User existingUser = existingUserOptional.get();
+            existingUser.setFirstname(request.getFirstname());
+            existingUser.setLastname(request.getLastname());
+            existingUser.setPassword(passwordEncoder.encode(request.getPassword()));
+            existingUser.setRole(request.getRole());
+            repository.save(existingUser);
+        } else {
+            User newUser = User.builder()
+                    .firstname(request.getFirstname())
+                    .lastname(request.getLastname())
+                    .email(request.getEmail())
+                    .password(passwordEncoder.encode(request.getPassword()))
+                    .role(request.getRole())
+                    .build();
+            repository.save(newUser);
         }
-        var user = User.builder()
-                .firstname(request.getFirstname())
-                .lastname(request.getLastname())
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .role(request.getRole())
-                .build();
-        var savedUser = repository.save(user);
+
+        var user = repository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new UsernameNotFoundException("Email not found"));
+
         var jwtToken = jwtService.generateToken(user);
-        saveUserToken(savedUser, jwtToken);
+        revokeAllUserTokens(user);
+        saveUserToken(user, jwtToken);
         String link = "http://localhost:8080/api/v1/auth/confirm?token=" + jwtToken;
-        mailSender.send(request.getEmail(), buildVerificationEmail(savedUser.getFirstname(), link));
+        mailSender.send(request.getEmail(), buildVerificationEmail(request.getFirstname(), link));
         return AuthenticationResponse.builder()
                 .accessToken(jwtToken)
                 .build();
     }
+
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         var user = repository.findByEmail(request.getEmail())
@@ -77,7 +93,7 @@ public class AuthenticationService {
     }
 
     private void saveUserToken(User user, String jwtToken) {
-        var expiredAt = LocalDateTime.now().plusMinutes(60);
+        var expiredAt = LocalDateTime.now().plusMinutes(1);
         var token = Token.builder()
                 .user(user)
                 .token(jwtToken)
@@ -86,7 +102,7 @@ public class AuthenticationService {
                 .revoked(false)
                 .confirmedAt(LocalDateTime.now())
                 .expiresAt(expiredAt)
-                .createAt(LocalDateTime.now())
+                .createdAt(LocalDateTime.now())
                 .build();
         confirmationTokenService.saveConfirmationToken(token);
     }
@@ -105,12 +121,13 @@ public class AuthenticationService {
     public String confirmToken(String token) {
         Token confirmationToken = confirmationTokenService
                 .getToken(token)
-                .orElseThrow(()  -> new IllegalStateException("token not found"));
+                .orElseThrow(() -> new TokenNotFoundException("token not found"));
 
         LocalDateTime expiredAt = confirmationToken.getExpiresAt();
         if (expiredAt.isBefore(LocalDateTime.now())) {
-            throw new IllegalStateException("token expired");
+            throw new TokenExpiredException("Token has expired. Please register again.");
         }
+
         confirmationTokenService.setConfirmedAt(token);
         jwtService.enableAppUser(confirmationToken.getUser().getEmail());
         return "confirmed";

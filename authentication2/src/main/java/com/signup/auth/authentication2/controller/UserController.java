@@ -1,6 +1,9 @@
 package com.signup.auth.authentication2.controller;
 
+import com.signup.auth.authentication2.config.CustomException;
 import com.signup.auth.authentication2.config.EmailNotConfirmedException;
+import com.signup.auth.authentication2.config.TokenExpiredException;
+import com.signup.auth.authentication2.config.TokenNotFoundException;
 import com.signup.auth.authentication2.model.AuthenticationRequest;
 import com.signup.auth.authentication2.model.AuthenticationResponse;
 import com.signup.auth.authentication2.model.RegisterRequest;
@@ -30,8 +33,17 @@ public class UserController {
     }
 
     @GetMapping(path = "confirm")
-    public String confirm(@RequestParam("token") String token) {
-        return service.confirmToken(token);
+    public ResponseEntity<String> confirm(@RequestParam("token") String token) {
+        try {
+            service.confirmToken(token);
+            return ResponseEntity.ok("User registration confirmed successfully.");
+        } catch (TokenExpiredException e) {
+            return ResponseEntity.badRequest().body("Token has expired. Please register again.");
+        } catch (TokenNotFoundException e) {
+            return ResponseEntity.badRequest().body("Invalid token. Please check your email for the correct link.");
+        } catch (CustomException e) {
+            return ResponseEntity.badRequest().body("Some other error occurred.");
+        }
     }
 
     @PostMapping("/authenticate")

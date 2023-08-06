@@ -43,7 +43,7 @@ public class Token {
     private LocalDateTime expiresAt;
 
     @Column(nullable = false)
-    private LocalDateTime createAt;
+    private LocalDateTime createdAt;
 
     private LocalDateTime confirmedAt;
 
