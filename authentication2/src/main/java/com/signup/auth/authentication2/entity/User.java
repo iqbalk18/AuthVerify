@@ -32,7 +32,7 @@ public class User implements UserDetails {
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
-    private Boolean locked = false;
+//    private Boolean locked = false;
     private Boolean enabled = false;
     @OneToMany(mappedBy = "user")
     private List<Token> tokens;
@@ -59,7 +59,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return !locked;
+        return true;
     }
 
     @Override
