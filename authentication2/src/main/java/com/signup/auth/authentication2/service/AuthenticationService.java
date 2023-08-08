@@ -1,8 +1,8 @@
 package com.signup.auth.authentication2.service;
 
-import com.signup.auth.authentication2.config.EmailNotConfirmedException;
-import com.signup.auth.authentication2.config.TokenExpiredException;
-import com.signup.auth.authentication2.config.TokenNotFoundException;
+import com.signup.auth.authentication2.exception.EmailNotConfirmedException;
+import com.signup.auth.authentication2.exception.TokenExpiredException;
+import com.signup.auth.authentication2.exception.TokenNotFoundException;
 import com.signup.auth.authentication2.entity.User;
 import com.signup.auth.authentication2.model.AuthenticationRequest;
 import com.signup.auth.authentication2.model.AuthenticationResponse;

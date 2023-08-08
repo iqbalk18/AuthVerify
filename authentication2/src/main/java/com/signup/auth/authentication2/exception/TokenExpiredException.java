@@ -1,4 +1,4 @@
-package com.signup.auth.authentication2.config;
+package com.signup.auth.authentication2.exception;
 
 public class TokenExpiredException extends RuntimeException {
     public TokenExpiredException(String message) {

@@ -1,11 +1,12 @@
 package com.signup.auth.authentication2.controller;
 
-import com.signup.auth.authentication2.config.CustomException;
-import com.signup.auth.authentication2.config.EmailNotConfirmedException;
-import com.signup.auth.authentication2.config.TokenExpiredException;
-import com.signup.auth.authentication2.config.TokenNotFoundException;
+import com.signup.auth.authentication2.exception.CustomException;
+import com.signup.auth.authentication2.exception.EmailNotConfirmedException;
+import com.signup.auth.authentication2.exception.TokenExpiredException;
+import com.signup.auth.authentication2.exception.TokenNotFoundException;
 import com.signup.auth.authentication2.model.AuthenticationRequest;
 import com.signup.auth.authentication2.model.AuthenticationResponse;
+import com.signup.auth.authentication2.model.ErrorResponse;
 import com.signup.auth.authentication2.model.RegisterRequest;
 import com.signup.auth.authentication2.service.AuthenticationService;
 
@@ -15,8 +16,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
-
-import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -50,9 +49,9 @@ public class UserController {
             AuthenticationResponse response = service.authenticate(request);
             return ResponseEntity.ok(response);
         } catch (EmailNotConfirmedException ex) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED) .body("Email has not been confirmed");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED) .body(new ErrorResponse("error","Account not found, please registration!!!"));
         } catch (AuthenticationException ex) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Email and Password");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse("error","Invalid Email and Password"));
         }
     }
 }
