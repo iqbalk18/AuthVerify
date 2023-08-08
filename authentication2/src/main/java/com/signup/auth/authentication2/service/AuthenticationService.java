@@ -1,5 +1,6 @@
 package com.signup.auth.authentication2.service;
 
+import com.signup.auth.authentication2.config.EmailNotConfirmedException;
 import com.signup.auth.authentication2.config.TokenExpiredException;
 import com.signup.auth.authentication2.config.TokenNotFoundException;
 import com.signup.auth.authentication2.entity.User;
@@ -14,7 +15,6 @@ import com.signup.auth.authentication2.token.TokenRepository;
 import com.signup.auth.authentication2.token.TokenType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -75,6 +75,9 @@ public class AuthenticationService {
         var user = repository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
+        if (!user.isEnabled()) {
+            throw new EmailNotConfirmedException("Email has not been confirmed");
+        }
 
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(

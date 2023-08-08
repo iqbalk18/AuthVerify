@@ -26,9 +26,7 @@ public class UserController {
     private final AuthenticationService service;
 
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(
-            @RequestBody RegisterRequest request
-    ) {
+    public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request) {
         return ResponseEntity.ok(service.register(request));
     }
 
@@ -52,7 +50,7 @@ public class UserController {
             AuthenticationResponse response = service.authenticate(request);
             return ResponseEntity.ok(response);
         } catch (EmailNotConfirmedException ex) {
-            return ResponseEntity.badRequest().body("Email has not been confirmed");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED) .body("Email has not been confirmed");
         } catch (AuthenticationException ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Email and Password");
         }
