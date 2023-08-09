@@ -51,9 +51,9 @@ public class UserController {
             AuthenticationResponse response = service.authenticate(request);
             return ResponseEntity.ok(response);
         } catch (EmailNotConfirmedException ex) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED) .body(new ErrorResponse("error","Account not found, please registration!!!"));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED) .body(new ErrorResponse("error","Account not found, please registration with email or phone number"));
         } catch (AuthenticationException ex) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse("error","Invalid Email and Password"));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse("error","Invalid Email, Phone Number and Password"));
         }
     }
 }
