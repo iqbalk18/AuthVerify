@@ -4,9 +4,7 @@ import com.signup.auth.authentication2.token.Token;
 import jakarta.persistence.*;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -29,6 +27,7 @@ public class User implements UserDetails {
     private String firstname;
     private String lastname;
     private String email;
+    private String phone;
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -49,7 +48,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return email != null ? email : phone;
     }
 
     @Override

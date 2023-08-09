@@ -8,6 +8,7 @@ import com.signup.auth.authentication2.model.AuthenticationRequest;
 import com.signup.auth.authentication2.model.AuthenticationResponse;
 import com.signup.auth.authentication2.mail.MailSender;
 import com.signup.auth.authentication2.model.RegisterRequest;
+import com.signup.auth.authentication2.model.RegisterRequestPhone;
 import com.signup.auth.authentication2.repository.UserRepository;
 import com.signup.auth.authentication2.token.ConfirmationTokenService;
 import com.signup.auth.authentication2.token.Token;
@@ -70,10 +71,48 @@ public class AuthenticationService {
                 .build();
     }
 
+    public AuthenticationResponse registerWithPhone(RegisterRequestPhone request) {
+        Optional<User> existingUserOptional = repository.findByPhone(request.getPhone());
+        if (existingUserOptional.isPresent()) {
+            User existingUser = existingUserOptional.get();
+            existingUser.setFirstname(request.getFirstname());
+            existingUser.setLastname(request.getLastname());
+            existingUser.setPassword(passwordEncoder.encode(request.getPassword()));
+            existingUser.setRole(request.getRole());
+            repository.save(existingUser);
+        } else {
+            User newUser = User.builder()
+                    .firstname(request.getFirstname())
+                    .lastname(request.getLastname())
+                    .phone(request.getPhone())
+                    .password(passwordEncoder.encode(request.getPassword()))
+                    .role(request.getRole())
+                    .enabled(false)
+                    .build();
+            repository.save(newUser);
+        }
+        var user = repository.findByPhone(request.getPhone())
+                .orElseThrow(() -> new UsernameNotFoundException("Phone number not found"));
+
+        var jwtToken = jwtService.generateToken(user);
+        revokeAllUserTokens(user);
+        saveUserToken(user, jwtToken);
+        return AuthenticationResponse.builder()
+                .accessToken(jwtToken)
+                .build();
+    }
+
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
-        var user = repository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        User user;
+
+        if (request.getEmailOrPhone().contains("@")) {
+            user = repository.findByEmail(request.getEmailOrPhone())
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        } else {
+            user = repository.findByPhone(request.getEmailOrPhone())
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        }
 
         if (!user.isEnabled()) {
             throw new EmailNotConfirmedException("Email has not been confirmed");
@@ -81,7 +120,7 @@ public class AuthenticationService {
 
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
+                        request.getEmailOrPhone(),
                         request.getPassword()
                 )
         );

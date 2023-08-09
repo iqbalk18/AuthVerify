@@ -4,10 +4,7 @@ import com.signup.auth.authentication2.exception.CustomException;
 import com.signup.auth.authentication2.exception.EmailNotConfirmedException;
 import com.signup.auth.authentication2.exception.TokenExpiredException;
 import com.signup.auth.authentication2.exception.TokenNotFoundException;
-import com.signup.auth.authentication2.model.AuthenticationRequest;
-import com.signup.auth.authentication2.model.AuthenticationResponse;
-import com.signup.auth.authentication2.model.ErrorResponse;
-import com.signup.auth.authentication2.model.RegisterRequest;
+import com.signup.auth.authentication2.model.*;
 import com.signup.auth.authentication2.service.AuthenticationService;
 
 
@@ -24,9 +21,14 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final AuthenticationService service;
 
-    @PostMapping("/register")
+    @PostMapping("/register/mail")
     public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request) {
         return ResponseEntity.ok(service.register(request));
+    }
+
+    @PostMapping("/register/phone")
+    public ResponseEntity<AuthenticationResponse> registerPhone(@RequestBody RegisterRequestPhone requestPhone) {
+        return ResponseEntity.ok(service.registerWithPhone(requestPhone));
     }
 
     @GetMapping(path = "confirm")
