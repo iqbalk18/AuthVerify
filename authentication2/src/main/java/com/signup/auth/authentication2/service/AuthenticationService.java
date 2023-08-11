@@ -9,6 +9,7 @@ import com.signup.auth.authentication2.model.AuthenticationResponse;
 import com.signup.auth.authentication2.mail.MailSender;
 import com.signup.auth.authentication2.model.RegisterRequest;
 import com.signup.auth.authentication2.model.RegisterRequestPhone;
+import com.signup.auth.authentication2.phone.SmsSender;
 import com.signup.auth.authentication2.repository.UserRepository;
 import com.signup.auth.authentication2.token.ConfirmationTokenService;
 import com.signup.auth.authentication2.token.Token;
@@ -36,6 +37,7 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final MailSender mailSender;
     private final ConfirmationTokenService confirmationTokenService;
+    private final SmsSender smsSender;
 
     public AuthenticationResponse register(RegisterRequest request) {
         Optional<User> existingUserOptional = repository.findByEmail(request.getEmail());
@@ -97,6 +99,17 @@ public class AuthenticationService {
         var jwtToken = jwtService.generateToken(user);
         revokeAllUserTokens(user);
         saveUserToken(user, jwtToken);
+
+        String link = "http://localhost:8080/api/v1/auth/confirm?token=" + jwtToken;
+        String smsMessage = "Click the link below to activate your account: " + link;
+
+        RegisterRequestPhone smsRequest = RegisterRequestPhone.builder()
+                .phone(user.getPhone())
+                .message(smsMessage)
+                .build();
+
+        smsSender.sendSms(smsRequest);
+
         return AuthenticationResponse.builder()
                 .accessToken(jwtToken)
                 .build();

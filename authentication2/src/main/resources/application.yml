@@ -1,3 +1,9 @@
+twilio:
+  account_sid: ACf2b222422cef98052a72778a848690f7
+  auth_token: 41e7f6d26b27fbcc69203e734fd69135
+  trial_number: +12193886996
+
+
 server:
   error:
     include-message: always
@@ -46,5 +52,6 @@ application:
                 connectiontimeout: 5000
                 timeout: 3000
                 writetimeout: 5000
+
 
 

@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -17,4 +18,12 @@ public class RegisterRequestPhone {
     private String phone;
     private String password;
     private Role role;
+    private String message;
+    @Override
+    public String toString() {
+        return "SmsRequest{" +
+                "phoneNumber= ..." + '\'' +
+                ", message='" + message + '\'' +
+                '}';
+    }
 }
