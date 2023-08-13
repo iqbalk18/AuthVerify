@@ -162,7 +162,7 @@ public class AuthenticationService {
     }
 
 
-    public ChangePasswordResponse changePassword(ChangePasswordRequest request) {
+    public ChangePasswordResponse forgotChangePassword(ChangePasswordRequest request) {
         Token resetToken = confirmationTokenService.getToken(request.getToken())
                 .orElseThrow(() -> new TokenNotFoundException("Token not found"));
 

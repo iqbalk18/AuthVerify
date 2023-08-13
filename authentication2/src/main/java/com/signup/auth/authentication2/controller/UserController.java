@@ -64,9 +64,9 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/change-password")
+    @PostMapping("/forgot-change-password")
     public ResponseEntity<ChangePasswordResponse> changePassword(@RequestBody ChangePasswordRequest request) {
-        ChangePasswordResponse response = service.changePassword(request);
+        ChangePasswordResponse response = service.forgotChangePassword(request);
         return ResponseEntity.ok(response);
     }
 }
