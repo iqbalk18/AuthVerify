@@ -15,14 +15,14 @@ public class MailConfig {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         mailSender.setHost("smtp.gmail.com");
         mailSender.setPort(587);
-        mailSender.setUsername("kamaluddiniqbal15@gmail.com"); // Ganti dengan email Gmail Anda
-        mailSender.setPassword("vrhrshqldovunpqh"); // Ganti dengan password Gmail Anda
+        mailSender.setUsername("kamaluddiniqbal15@gmail.com");
+        mailSender.setPassword("vrhrshqldovunpqh");
 
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.debug", "true"); // Hapus baris ini jika ingin menonaktifkan log debug
+        props.put("mail.debug", "true");
 
         return mailSender;
     }

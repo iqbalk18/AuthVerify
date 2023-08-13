@@ -4,11 +4,8 @@ import com.signup.auth.authentication2.exception.EmailNotConfirmedException;
 import com.signup.auth.authentication2.exception.TokenExpiredException;
 import com.signup.auth.authentication2.exception.TokenNotFoundException;
 import com.signup.auth.authentication2.entity.User;
-import com.signup.auth.authentication2.model.AuthenticationRequest;
-import com.signup.auth.authentication2.model.AuthenticationResponse;
+import com.signup.auth.authentication2.model.*;
 import com.signup.auth.authentication2.mail.MailSender;
-import com.signup.auth.authentication2.model.RegisterRequest;
-import com.signup.auth.authentication2.model.RegisterRequestPhone;
 import com.signup.auth.authentication2.phone.SmsSender;
 import com.signup.auth.authentication2.repository.UserRepository;
 import com.signup.auth.authentication2.token.ConfirmationTokenService;
@@ -144,6 +141,63 @@ public class AuthenticationService {
         return AuthenticationResponse.builder()
                 .accessToken(jwtToken)
                 .build();
+    }
+
+
+    public ForgotPasswordResponse requestPasswordReset(ForgotPasswordRequest request) {
+        User user;
+
+        if (request.getEmailOrPhone().contains("@")) {
+            user = repository.findByEmail(request.getEmailOrPhone())
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        } else {
+            user = repository.findByPhone(request.getEmailOrPhone())
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        }
+
+        String resetToken = generatePasswordResetToken(user);
+        confirmationTokenService.saveConfirmationToken(createPasswordResetToken(user, resetToken));
+
+        return new ForgotPasswordResponse("Password reset token generated successfully");
+    }
+
+
+    public ChangePasswordResponse changePassword(ChangePasswordRequest request) {
+        Token resetToken = confirmationTokenService.getToken(request.getToken())
+                .orElseThrow(() -> new TokenNotFoundException("Token not found"));
+
+        LocalDateTime expiredAt = resetToken.getExpiresAt();
+        if (expiredAt.isBefore(LocalDateTime.now())) {
+            throw new TokenExpiredException("Token has expired. Please request a new password reset.");
+        }
+
+        User user = resetToken.getUser();
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        repository.save(user);
+
+        confirmationTokenService.setConfirmedAt(request.getToken());
+
+        return ChangePasswordResponse.builder()
+                .message("Password changed successfully")
+                .build();
+    }
+
+    private Token createPasswordResetToken(User user, String token) {
+        var expiredAt = LocalDateTime.now().plusMinutes(15);
+        return Token.builder()
+                .user(user)
+                .token(token)
+                .tokenType(TokenType.RESET_PASSWORD)
+                .expired(false)
+                .revoked(false)
+                .confirmedAt(LocalDateTime.now())
+                .expiresAt(expiredAt)
+                .createdAt(LocalDateTime.now())
+                .build();
+    }
+    private String generatePasswordResetToken(User user) {
+        String resetToken = "your_generated_reset_token_here";
+        return resetToken;
     }
 
     private void saveUserToken(User user, String jwtToken) {
