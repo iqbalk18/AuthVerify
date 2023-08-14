@@ -1,4 +1,4 @@
-package com.signup.auth.authentication2.model;
+package com.signup.auth.authentication2.model.forgotmodel;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class ForgotPasswordResponse {
-    private String message;
+@NoArgsConstructor
+public class ForgotPasswordRequest {
+    private String emailOrPhone;
 }

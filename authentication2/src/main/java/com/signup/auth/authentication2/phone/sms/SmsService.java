@@ -1,6 +1,6 @@
-package com.signup.auth.authentication2.phone;
+package com.signup.auth.authentication2.phone.sms;
 
-import com.signup.auth.authentication2.model.RegisterRequestPhone;
+import com.signup.auth.authentication2.model.registermodel.RegisterRequestPhone;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;

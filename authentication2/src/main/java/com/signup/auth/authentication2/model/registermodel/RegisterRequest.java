@@ -1,4 +1,4 @@
-package com.signup.auth.authentication2.model;
+package com.signup.auth.authentication2.model.registermodel;
 
 import com.signup.auth.authentication2.entity.Role;
 import lombok.AllArgsConstructor;

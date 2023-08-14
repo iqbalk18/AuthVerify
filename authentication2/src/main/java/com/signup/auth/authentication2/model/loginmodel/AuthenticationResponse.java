@@ -1,4 +1,4 @@
-package com.signup.auth.authentication2.model;
+package com.signup.auth.authentication2.model.loginmodel;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

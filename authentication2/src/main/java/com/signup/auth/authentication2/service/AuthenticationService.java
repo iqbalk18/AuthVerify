@@ -4,9 +4,16 @@ import com.signup.auth.authentication2.exception.EmailNotConfirmedException;
 import com.signup.auth.authentication2.exception.TokenExpiredException;
 import com.signup.auth.authentication2.exception.TokenNotFoundException;
 import com.signup.auth.authentication2.entity.User;
-import com.signup.auth.authentication2.model.*;
 import com.signup.auth.authentication2.mail.MailSender;
-import com.signup.auth.authentication2.phone.SmsSender;
+import com.signup.auth.authentication2.model.forgotmodel.ChangePasswordRequest;
+import com.signup.auth.authentication2.model.forgotmodel.ChangePasswordResponse;
+import com.signup.auth.authentication2.model.forgotmodel.ForgotPasswordRequest;
+import com.signup.auth.authentication2.model.forgotmodel.ForgotPasswordResponse;
+import com.signup.auth.authentication2.model.loginmodel.AuthenticationRequest;
+import com.signup.auth.authentication2.model.loginmodel.AuthenticationResponse;
+import com.signup.auth.authentication2.model.registermodel.RegisterRequest;
+import com.signup.auth.authentication2.model.registermodel.RegisterRequestPhone;
+import com.signup.auth.authentication2.phone.sms.SmsSender;
 import com.signup.auth.authentication2.repository.UserRepository;
 import com.signup.auth.authentication2.token.ConfirmationTokenService;
 import com.signup.auth.authentication2.token.Token;
@@ -23,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -158,7 +166,10 @@ public class AuthenticationService {
         String resetToken = generatePasswordResetToken(user);
         confirmationTokenService.saveConfirmationToken(createPasswordResetToken(user, resetToken));
 
-        return new ForgotPasswordResponse("Password reset token generated successfully");
+        return ForgotPasswordResponse.builder()
+                .message("Password reset token generated successfully")
+                .forgotToken(resetToken)
+                .build();
     }
 
 
@@ -196,8 +207,7 @@ public class AuthenticationService {
                 .build();
     }
     private String generatePasswordResetToken(User user) {
-        String resetToken = "your_generated_reset_token_here";
-        return resetToken;
+        return UUID.randomUUID().toString();
     }
 
     private void saveUserToken(User user, String jwtToken) {

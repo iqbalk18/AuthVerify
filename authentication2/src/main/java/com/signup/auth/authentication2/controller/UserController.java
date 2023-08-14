@@ -5,6 +5,14 @@ import com.signup.auth.authentication2.exception.EmailNotConfirmedException;
 import com.signup.auth.authentication2.exception.TokenExpiredException;
 import com.signup.auth.authentication2.exception.TokenNotFoundException;
 import com.signup.auth.authentication2.model.*;
+import com.signup.auth.authentication2.model.forgotmodel.ChangePasswordRequest;
+import com.signup.auth.authentication2.model.forgotmodel.ChangePasswordResponse;
+import com.signup.auth.authentication2.model.forgotmodel.ForgotPasswordRequest;
+import com.signup.auth.authentication2.model.forgotmodel.ForgotPasswordResponse;
+import com.signup.auth.authentication2.model.loginmodel.AuthenticationRequest;
+import com.signup.auth.authentication2.model.loginmodel.AuthenticationResponse;
+import com.signup.auth.authentication2.model.registermodel.RegisterRequest;
+import com.signup.auth.authentication2.model.registermodel.RegisterRequestPhone;
 import com.signup.auth.authentication2.service.AuthenticationService;
 
 

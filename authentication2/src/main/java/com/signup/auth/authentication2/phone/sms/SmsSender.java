@@ -1,6 +1,6 @@
-package com.signup.auth.authentication2.phone;
+package com.signup.auth.authentication2.phone.sms;
 
-import com.signup.auth.authentication2.model.RegisterRequestPhone;
+import com.signup.auth.authentication2.model.registermodel.RegisterRequestPhone;
 
 public interface SmsSender {
 

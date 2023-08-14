@@ -1,6 +1,7 @@
-package com.signup.auth.authentication2.phone;
+package com.signup.auth.authentication2.phone.sms;
 
-import com.signup.auth.authentication2.model.RegisterRequestPhone;
+import com.signup.auth.authentication2.model.registermodel.RegisterRequestPhone;
+import com.signup.auth.authentication2.phone.twilio.TwilioConfiguration;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.rest.api.v2010.account.MessageCreator;
 import com.twilio.type.PhoneNumber;

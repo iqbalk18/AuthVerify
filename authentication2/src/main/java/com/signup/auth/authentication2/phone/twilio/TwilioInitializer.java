@@ -1,4 +1,4 @@
-package com.signup.auth.authentication2.phone;
+package com.signup.auth.authentication2.phone.twilio;
 
 import com.twilio.Twilio;
 import org.slf4j.Logger;

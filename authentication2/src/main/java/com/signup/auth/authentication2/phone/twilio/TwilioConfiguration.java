@@ -1,4 +1,4 @@
-package com.signup.auth.authentication2.phone;
+package com.signup.auth.authentication2.phone.twilio;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
