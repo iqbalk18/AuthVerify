@@ -1,19 +1,13 @@
 package com.signup.auth.authentication2.service;
 
+import com.signup.auth.authentication2.entity.Role;
 import com.signup.auth.authentication2.exception.EmailNotConfirmedException;
 import com.signup.auth.authentication2.exception.TokenExpiredException;
 import com.signup.auth.authentication2.exception.TokenNotFoundException;
 import com.signup.auth.authentication2.entity.User;
+import com.signup.auth.authentication2.model.*;
 import com.signup.auth.authentication2.mail.MailSender;
-import com.signup.auth.authentication2.model.forgotmodel.ChangePasswordRequest;
-import com.signup.auth.authentication2.model.forgotmodel.ChangePasswordResponse;
-import com.signup.auth.authentication2.model.forgotmodel.ForgotPasswordRequest;
-import com.signup.auth.authentication2.model.forgotmodel.ForgotPasswordResponse;
-import com.signup.auth.authentication2.model.loginmodel.AuthenticationRequest;
-import com.signup.auth.authentication2.model.loginmodel.AuthenticationResponse;
-import com.signup.auth.authentication2.model.registermodel.RegisterRequest;
-import com.signup.auth.authentication2.model.registermodel.RegisterRequestPhone;
-import com.signup.auth.authentication2.phone.sms.SmsSender;
+import com.signup.auth.authentication2.phone.SmsSender;
 import com.signup.auth.authentication2.repository.UserRepository;
 import com.signup.auth.authentication2.token.ConfirmationTokenService;
 import com.signup.auth.authentication2.token.Token;
@@ -30,7 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -46,6 +39,10 @@ public class AuthenticationService {
 
     public AuthenticationResponse register(RegisterRequest request) {
         Optional<User> existingUserOptional = repository.findByEmail(request.getEmail());
+        Role userRole = request.getRole();
+        if (userRole == null) {
+            userRole = Role.USER;
+        }
         if (existingUserOptional.isPresent()) {
             User existingUser = existingUserOptional.get();
             existingUser.setFirstname(request.getFirstname());
@@ -59,7 +56,7 @@ public class AuthenticationService {
                     .lastname(request.getLastname())
                     .email(request.getEmail())
                     .password(passwordEncoder.encode(request.getPassword()))
-                    .role(request.getRole())
+                    .role(userRole)
                     .enabled(false)
                     .build();
             repository.save(newUser);
@@ -80,6 +77,10 @@ public class AuthenticationService {
 
     public AuthenticationResponse registerWithPhone(RegisterRequestPhone request) {
         Optional<User> existingUserOptional = repository.findByPhone(request.getPhone());
+        Role userRole = request.getRole();
+        if (userRole == null) {
+            userRole = Role.USER;
+        }
         if (existingUserOptional.isPresent()) {
             User existingUser = existingUserOptional.get();
             existingUser.setFirstname(request.getFirstname());
@@ -93,7 +94,7 @@ public class AuthenticationService {
                     .lastname(request.getLastname())
                     .phone(request.getPhone())
                     .password(passwordEncoder.encode(request.getPassword()))
-                    .role(request.getRole())
+                    .role(userRole)
                     .enabled(false)
                     .build();
             repository.save(newUser);
@@ -166,14 +167,11 @@ public class AuthenticationService {
         String resetToken = generatePasswordResetToken(user);
         confirmationTokenService.saveConfirmationToken(createPasswordResetToken(user, resetToken));
 
-        return ForgotPasswordResponse.builder()
-                .message("Password reset token generated successfully")
-                .forgotToken(resetToken)
-                .build();
+        return new ForgotPasswordResponse("Password reset token generated successfully");
     }
 
 
-    public ChangePasswordResponse forgotChangePassword(ChangePasswordRequest request) {
+    public ChangePasswordResponse changePassword(ChangePasswordRequest request) {
         Token resetToken = confirmationTokenService.getToken(request.getToken())
                 .orElseThrow(() -> new TokenNotFoundException("Token not found"));
 
@@ -207,7 +205,8 @@ public class AuthenticationService {
                 .build();
     }
     private String generatePasswordResetToken(User user) {
-        return UUID.randomUUID().toString();
+        String resetToken = "your_generated_reset_token_here";
+        return resetToken;
     }
 
     private void saveUserToken(User user, String jwtToken) {
