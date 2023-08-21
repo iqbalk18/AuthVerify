@@ -1,5 +1,6 @@
 package com.signup.auth.authentication2.service;
 
+import com.signup.auth.authentication2.entity.Role;
 import com.signup.auth.authentication2.exception.EmailNotConfirmedException;
 import com.signup.auth.authentication2.exception.TokenExpiredException;
 import com.signup.auth.authentication2.exception.TokenNotFoundException;
@@ -46,6 +47,12 @@ public class AuthenticationService {
 
     public AuthenticationResponse register(RegisterRequest request) {
         Optional<User> existingUserOptional = repository.findByEmail(request.getEmail());
+
+        Role userRole = request.getRole();
+        if (userRole == null) {
+            userRole = Role.USER;
+        }
+
         if (existingUserOptional.isPresent()) {
             User existingUser = existingUserOptional.get();
             existingUser.setFirstname(request.getFirstname());
@@ -59,7 +66,7 @@ public class AuthenticationService {
                     .lastname(request.getLastname())
                     .email(request.getEmail())
                     .password(passwordEncoder.encode(request.getPassword()))
-                    .role(request.getRole())
+                    .role(userRole)
                     .enabled(false)
                     .build();
             repository.save(newUser);
@@ -80,6 +87,12 @@ public class AuthenticationService {
 
     public AuthenticationResponse registerWithPhone(RegisterRequestPhone request) {
         Optional<User> existingUserOptional = repository.findByPhone(request.getPhone());
+
+        Role userRole = request.getRole();
+        if (userRole == null) {
+            userRole = Role.USER;
+        }
+
         if (existingUserOptional.isPresent()) {
             User existingUser = existingUserOptional.get();
             existingUser.setFirstname(request.getFirstname());
@@ -93,11 +106,12 @@ public class AuthenticationService {
                     .lastname(request.getLastname())
                     .phone(request.getPhone())
                     .password(passwordEncoder.encode(request.getPassword()))
-                    .role(request.getRole())
+                    .role(userRole)
                     .enabled(false)
                     .build();
             repository.save(newUser);
         }
+
         var user = repository.findByPhone(request.getPhone())
                 .orElseThrow(() -> new UsernameNotFoundException("Phone number not found"));
 
