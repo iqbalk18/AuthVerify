@@ -1,22 +1,17 @@
-import "./App.css";
-import styled from "styled-components";
-import { AccountBox } from "./components/accountBox";
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Signup from './screens/Signup';
+import Signin from './screens/Signin';
 
-const AppContainer = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`;
-
-function App() {
+export default function App() {
   return (
-    <AppContainer>
-      <AccountBox />
-    </AppContainer>
+    <div className="App" id="main">
+      <Router>
+        <Routes>
+          <Route path="/" element={<Signin />} />
+          <Route path="/signup" element={<Signup />} />
+        </Routes>
+      </Router>
+    </div>
   );
 }
-
-export default App;
