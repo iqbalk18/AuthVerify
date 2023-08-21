@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate  } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.css';
 import SigninService from '../service/SigninService';
 
 function Signin() {
+    const navigate = useNavigate(); 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -13,8 +14,7 @@ function Signin() {
 
         try {
             const accessToken = await SigninService.authenticate(username, password);
-            // Lakukan navigasi ke halaman setelah login berhasil
-            // Contoh: window.location.href = '/dashboard';
+            navigate('/dashboard'); 
         } catch (error) {
             console.error('Login error:', error);
             setError("Invalid username or password.");

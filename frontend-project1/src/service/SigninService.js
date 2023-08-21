@@ -3,7 +3,7 @@ import axios from 'axios';
 class SigninService {
     constructor() {
         this.api = axios.create({
-            baseURL: 'http://localhost:8080/api/v1/auth', // Ganti dengan URL backend Anda
+            baseURL: 'http://localhost:8080/api/v1/auth',
         });
     }
 
