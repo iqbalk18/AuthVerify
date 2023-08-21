@@ -30,14 +30,14 @@ function Signin() {
                             <h3 className="card-title text-center">Login</h3>
                             {error && <div className="text-danger">{error}</div>}
                             <form>
-                                <div className="mb-3">
-                                    <label htmlFor="username" className="form-label">Username</label>
-                                    <input type="text" className="form-control" id="username" value={username} onChange={e => setUsername(e.target.value)} />
-                                </div>
-                                <div className="mb-3">
-                                    <label htmlFor="password" className="form-label">Password</label>
-                                    <input type="password" className="form-control" id="password" value={password} onChange={e => setPassword(e.target.value)} />
-                                </div>
+                            <div class="form-floating mb-3">
+                                <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" value={username} onChange={e => setUsername(e.target.value)} />
+                                <label for="floatingInput">Email address</label>
+                            </div>
+                            <div class="form-floating">
+                                <input type="password" class="form-control" id="floatingPassword" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
+                                <label for="floatingPassword">Password</label>
+                            </div>
                                 <div className="d-grid">
                                     <button type="submit" className="btn btn-primary" onClick={handleLogin}>Login</button>
                                 </div>
