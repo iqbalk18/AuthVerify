@@ -10,12 +10,13 @@ function Signup() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-
+  const [loading, setLoading] = useState(false);
 
   const handleSignup = async (e) => {
     e.preventDefault();
 
     try {
+      setLoading(true); 
       const Token = await SignupService.register(firstname, lastname, email, password);
       console.log('Registration successful');
       setFirstname('');
@@ -26,6 +27,8 @@ function Signup() {
     } catch (error) {
       console.error('Registration error:', error);
       setError("Registration failed. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -56,7 +59,15 @@ function Signup() {
                   <label for="floatingInput">Password</label>
                 </div>
                 <div className="d-grid">
-                  <button type="submit" className="btn btn-primary" onClick={handleSignup}>Sign Up</button>
+                  <button type="submit" className="btn btn-primary" onClick={handleSignup} disabled={loading}>
+                  {loading ? (
+                      <div className="spinner-border" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                      </div>
+                    ) : (
+                      'Sign Up'
+                    )}
+                  </button>
                 </div>
                 <div className="text-center mt-3">
                   Back to <Link to="/">SignIn</Link>
