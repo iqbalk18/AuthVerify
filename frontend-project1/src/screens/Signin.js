@@ -29,7 +29,7 @@ function Signin() {
                     <div className="card">
                         <div className="card-body">
                             <h3 className="card-title text-center">Login</h3>
-                            {error && <div className="text-danger">{error}</div>}
+                            {error && <div className="text-danger text-center">{error}</div>}
                             <form>
                             <div class="form-floating mb-3">
                                 <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" value={username} onChange={e => setUsername(e.target.value)} />

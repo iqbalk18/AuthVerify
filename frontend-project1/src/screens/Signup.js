@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.css';
 import SignupService from '../service/SignupService';
 
@@ -18,7 +18,11 @@ function Signup() {
     try {
       const Token = await SignupService.register(firstname, lastname, email, password);
       console.log('Registration successful');
-      navigate('/'); 
+      setFirstname('');
+      setLastname('');
+      setEmail('');
+      setPassword('');
+      setError('');
     } catch (error) {
       console.error('Registration error:', error);
       setError("Registration failed. Please try again.");
@@ -33,7 +37,7 @@ function Signup() {
           <div className="card">
             <div className="card-body">
               <h3 className="card-title text-center">Sign Up</h3>
-              {error && <div className="text-danger">{error}</div>}
+              {error && <div className="text-danger text-center">{error}</div>}
               <form>
               <div class="form-floating mb-3">
                   <input type="firstname" class="form-control" id="firstname" placeholder="" value={firstname} onChange={e => setFirstname(e.target.value)} />
@@ -53,6 +57,9 @@ function Signup() {
                 </div>
                 <div className="d-grid">
                   <button type="submit" className="btn btn-primary" onClick={handleSignup}>Sign Up</button>
+                </div>
+                <div className="text-center mt-3">
+                  Back to <Link to="/">SignIn</Link>
                 </div>
               </form>
             </div>
