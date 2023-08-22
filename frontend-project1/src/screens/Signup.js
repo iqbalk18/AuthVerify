@@ -35,21 +35,21 @@ function Signup() {
               <h3 className="card-title text-center">Sign Up</h3>
               {error && <div className="text-danger">{error}</div>}
               <form>
-                <div className="mb-3">
-                  <label htmlFor="firstname" className="form-label">First Name</label>
-                  <input type="text" className="form-control" id="firstname" value={firstname} onChange={e => setFirstname(e.target.value)} />
+              <div class="form-floating mb-3">
+                  <input type="firstname" class="form-control" id="firstname" placeholder="" value={firstname} onChange={e => setFirstname(e.target.value)} />
+                  <label for="floatingInput">First Name</label>
                 </div>
-                <div className="mb-3">
-                  <label htmlFor="lastname" className="form-label">Last Name</label>
-                  <input type="text" className="form-control" id="lastname" value={lastname} onChange={e => setLastname(e.target.value)} />
+                <div class="form-floating mb-3">
+                  <input type="lastname" class="form-control" id="lastname" placeholder="" value={lastname} onChange={e => setLastname(e.target.value)} />
+                  <label for="floatingInput">Last Name</label>
                 </div>
-                <div className="mb-3">
-                  <label htmlFor="email" className="form-label">Email or Phone</label>
-                  <input type="text" className="form-control" id="email" value={email} onChange={e => setEmail(e.target.value)} />
+                <div class="form-floating mb-3">
+                  <input type="email" class="form-control" id="email" placeholder="" value={email} onChange={e => setEmail(e.target.value)} />
+                  <label for="floatingInput">Email or Phone</label>
                 </div>
-                <div className="mb-3">
-                  <label htmlFor="password" className="form-label">Password</label>
-                  <input type="password" className="form-control" id="password" value={password} onChange={e => setPassword(e.target.value)} />
+                <div class="form-floating mb-3">
+                  <input type="password" class="form-control" id="password" placeholder="" value={password} onChange={e => setPassword(e.target.value)} />
+                  <label for="floatingInput">Password</label>
                 </div>
                 <div className="d-grid">
                   <button type="submit" className="btn btn-primary" onClick={handleSignup}>Sign Up</button>
