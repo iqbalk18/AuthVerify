@@ -12,8 +12,15 @@ function Signup() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
+
+
   const handleSignup = async (e) => {
     e.preventDefault();
+
+    if (!firstname || !lastname || !email || !password) {
+      setError("Fields are required.");
+      return;
+    }
 
     try {
       setLoading(true); 
