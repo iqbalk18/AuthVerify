@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import '../styles/Dashboard.css'
 
 
 function Dashboard() {

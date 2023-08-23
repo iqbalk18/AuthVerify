@@ -1,17 +1,48 @@
-.navbar {
-    padding: 10px 0;
-  }
-  
-  .container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 10vh;
-  }
-  
+body {
+  background-color: #77797a; 
+}
 
-.navbar-light {
-    background-color: #f8f9fa;
-    padding: 5px 0;
-  }
-  
+
+.navbar {
+  padding: 10px 0;
+}
+
+
+.navbar-brand {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+
+.nav-link {
+  color: white;
+}
+
+
+.nav-link.active {
+  font-weight: bold;
+}
+
+.dropdown-menu {
+  background-color: #343a40; 
+}
+
+.dropdown-item {
+  color: white;
+}
+
+
+.form-control {
+  width: 200px; 
+}
+
+.btn-outline-success {
+  color: white;
+  border-color: white;
+}
+
+
+.navbar-nav-scroll {
+  max-height: 100px;
+  overflow-y: auto;
+}
