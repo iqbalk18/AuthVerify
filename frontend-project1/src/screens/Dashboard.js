@@ -20,7 +20,7 @@ function Dashboard() {
               <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Daily
               </a>
-              <ul class="dropdown-menu bg-dark">
+              <ul class="dropdown-menu">
                 <li><a class="dropdown-item text-white" href="#">Departure</a></li>
                 <li><a class="dropdown-item text-white" href="#">Arrival</a></li>
                 <li><hr class="dropdown-divider" /></li>
