@@ -23,10 +23,9 @@ public class ScheduledDeparture {
     private String travelStatus;
     private String remark;
     private String serviceType;
-    private LocalDateTime departureDate;
     private String destination;
-    private LocalDateTime departureTime;
-    private LocalDateTime estimatedDepartureTime;
-    private LocalDateTime actualDepartureTime;
-    private LocalDateTime cancelTime;
+    private String departureDateTime;
+    private String estimatedDepartureDateTime;
+    private String actualDepartureDateTime;
+    private String cancelDateTime;
 }

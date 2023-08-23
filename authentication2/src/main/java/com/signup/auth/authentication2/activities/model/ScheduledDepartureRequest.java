@@ -5,7 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Data
 @Builder
@@ -16,11 +17,14 @@ public class ScheduledDepartureRequest {
     private String travelStatus;
     private String remark;
     private String serviceType;
-    private LocalDateTime departureDate;
     private String destination;
-    private LocalDateTime departureTime;
-    private LocalDateTime estimatedDepartureTime;
-    private LocalDateTime actualDepartureTime;
-    private LocalDateTime cancelTime;
+    private String departureDate;
+    private String departureTime;
+    private String estimatedDepartureDate;
+    private String estimatedDepartureTime;
+    private String actualDepartureDate;
+    private String actualDepartureTime;
+    private String cancelDate;
+    private String cancelTime;
 }
 

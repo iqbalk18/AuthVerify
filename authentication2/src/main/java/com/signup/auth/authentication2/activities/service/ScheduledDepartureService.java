@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,12 +38,11 @@ public class ScheduledDepartureService {
         scheduledDeparture.setTravelStatus(request.getTravelStatus());
         scheduledDeparture.setRemark(request.getRemark());
         scheduledDeparture.setServiceType(request.getServiceType());
-        scheduledDeparture.setDepartureDate(request.getDepartureDate());
         scheduledDeparture.setDestination(request.getDestination());
-        scheduledDeparture.setDepartureTime(request.getDepartureTime());
-        scheduledDeparture.setEstimatedDepartureTime(request.getEstimatedDepartureTime());
-        scheduledDeparture.setActualDepartureTime(request.getActualDepartureTime());
-        scheduledDeparture.setCancelTime(request.getCancelTime());
+        scheduledDeparture.setDepartureDateTime(request.getDepartureDate() + "T" + request.getDepartureTime());
+        scheduledDeparture.setEstimatedDepartureDateTime(request.getEstimatedDepartureDate() + "T" + request.getEstimatedDepartureTime());
+        scheduledDeparture.setActualDepartureDateTime(request.getActualDepartureDate() + "T" + request.getActualDepartureTime());
+        scheduledDeparture.setCancelDateTime(request.getCancelDate() + "T" + request.getCancelTime());
         return scheduledDeparture;
     }
 
@@ -65,12 +65,15 @@ public class ScheduledDepartureService {
                 .travelStatus(departure.getTravelStatus())
                 .remark(departure.getRemark())
                 .serviceType(departure.getServiceType())
-                .departureDate(departure.getDepartureDate())
                 .destination(departure.getDestination())
-                .departureTime(departure.getDepartureTime())
-                .estimatedDepartureTime(departure.getEstimatedDepartureTime())
-                .actualDepartureTime(departure.getActualDepartureTime())
-                .cancelTime(departure.getCancelTime())
+                .departureDate(departure.getDepartureDateTime().substring(0, 10))
+                .departureTime(departure.getDepartureDateTime().substring(11))
+                .estimatedDepartureDate(departure.getEstimatedDepartureDateTime().substring(0, 10))
+                .estimatedDepartureTime(departure.getEstimatedDepartureDateTime().substring(11))
+                .actualDepartureDate(departure.getActualDepartureDateTime().substring(0, 10))
+                .actualDepartureTime(departure.getActualDepartureDateTime().substring(11))
+                .cancelDate(departure.getCancelDateTime().substring(0, 10))
+                .cancelTime(departure.getCancelDateTime().substring(11))
                 .build();
 
         requestData.add(request);
