@@ -17,6 +17,12 @@ function Dashboard() {
     }]);
   };
 
+  const handleDeleteRow = (index) => {
+    const newData = [...data];
+    newData.splice(index, 1);
+    setData(newData);
+  };
+
   const handleInputChange = (event, index, column) => {
     const { value } = event.target;
     const newData = [...data];
@@ -106,26 +112,31 @@ function Dashboard() {
       <table className="table">
         <thead>
           <tr>
-            <th>#</th>
-            <th>Column 1</th>
-            <th>Column 2</th>
-            <th>Column 3</th>
-            <th>Column 4</th>
-            <th>Column 5</th>
+            <th>Departure Date</th>
+            <th>Departure Time</th>
+            <th>Estimated Date</th>
+            <th>Estimated Time</th>
+            <th>Actual Date</th>
+            <th>Actual Time</th>
           </tr>
         </thead>
         <tbody>
         {data.map((row, index) => (
           <tr>
-            <td>1</td>
             <td>Data 1</td>
             <td>Data 2</td>
             <td>Data 3</td>
             <td>Data 4</td>
             <td>Data 5</td>
+            <td>Data 6</td>
+                <button
+                  className="btn btn-danger btn-sm"
+                  onClick={() => handleDeleteRow(index)}
+                >
+                  Delete
+                </button>
           </tr>
           ))}
-          {/* You can add more rows here */}
         </tbody>
       </table>
     </div>
