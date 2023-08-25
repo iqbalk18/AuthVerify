@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import '../styles/Dashboard.css'
+import { BsSearch } from 'react-icons/bs';
+
 
 
 function Dashboard() {
@@ -27,15 +29,17 @@ function Dashboard() {
                 <li><a class="dropdown-item text-white" href="#">Something else here</a></li>
               </ul>
             </li>
-          
           </ul>
           <form class="d-flex" role="search">
             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-            <button class="btn btn-outline-success" type="submit">Search</button>
+            <button class="btn btn-outline-success" type="submit">
+            <BsSearch /> Search
+              </button>
           </form>
         </div>
       </div>
     </nav>
+
   );
 }
 
