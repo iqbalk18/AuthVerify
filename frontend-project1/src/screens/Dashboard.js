@@ -1,9 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import '../styles/Dashboard.css';
 import { BsSearch } from 'react-icons/bs';
 
 function Dashboard() {
+
+  const [data, setData] = useState([]);
+
+  const handleAddRow = () => {
+    setData([...data, {
+      column1: '',
+      column2: '',
+      column3: '',
+      column4: '',
+      column5: ''
+    }]);
+  };
+
+  const handleInputChange = (event, index, column) => {
+    const { value } = event.target;
+    const newData = [...data];
+    newData[index][column] = value;
+    setData(newData);
+  };
+
   return (
     <div>
       <nav className="navbar navbar-expand-lg">
@@ -82,7 +102,7 @@ function Dashboard() {
           </div>
         </div>
       </nav>
-
+      <button className="btn btn-primary mb-3" onClick={handleAddRow}>Add Row</button>
       <table className="table">
         <thead>
           <tr>
@@ -95,6 +115,7 @@ function Dashboard() {
           </tr>
         </thead>
         <tbody>
+        {data.map((row, index) => (
           <tr>
             <td>1</td>
             <td>Data 1</td>
@@ -103,6 +124,7 @@ function Dashboard() {
             <td>Data 4</td>
             <td>Data 5</td>
           </tr>
+          ))}
           {/* You can add more rows here */}
         </tbody>
       </table>
