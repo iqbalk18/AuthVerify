@@ -123,7 +123,7 @@ function Dashboard() {
         <tbody>
         {data.map((row, index) => (
           <tr key={index}>
-          <td>
+          <td className="border-right">
             <input
               type="text"
               className="form-control"
@@ -132,7 +132,7 @@ function Dashboard() {
               onChange={(event) => handleInputChange(event, index, 'column1')}
             />
             </td>
-            <td>
+            <td className="border-right">
                 <input
                   type="text"
                   className="form-control"
@@ -141,7 +141,7 @@ function Dashboard() {
                   onChange={(event) => handleInputChange(event, index, 'column2')}
                 />
               </td>
-              <td>
+              <td className="border-right">
                 <input
                   type="text"
                   className="form-control"
@@ -150,7 +150,7 @@ function Dashboard() {
                   onChange={(event) => handleInputChange(event, index, 'column3')}
                 />
               </td>
-              <td>
+              <td className="border-right">
                 <input
                   type="text"
                   className="form-control"
@@ -159,7 +159,7 @@ function Dashboard() {
                   onChange={(event) => handleInputChange(event, index, 'column4')}
                 />
               </td>
-              <td>
+              <td className="border-right">
                 <input
                   type="text"
                   className="form-control"
@@ -168,7 +168,7 @@ function Dashboard() {
                   onChange={(event) => handleInputChange(event, index, 'column5')}
                 />
               </td>
-              <td>
+              <td className="border-right">
                 <input
                   type="text"
                   className="form-control"

@@ -64,7 +64,7 @@ body {
 }
 
 .form-control::placeholder {
-  color: rgb(99, 98, 98); /* Set the placeholder text color to white */
+  color: rgb(196, 189, 189); 
 }
 
 .form-control {
@@ -83,4 +83,9 @@ body {
   background-color: #272b30; 
   border-color: #343a40; 
   color: white;
+}
+
+
+.border-right {
+  border-right: 1px solid white;
 }
