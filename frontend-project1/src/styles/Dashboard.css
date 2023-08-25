@@ -1,5 +1,5 @@
 body {
-  background-color: #212529; 
+  background-color: #343a40; 
 }
 
 /* Navbar */
@@ -53,4 +53,34 @@ body {
 .dropdown-item:hover {
   background-color: #458bfa; 
   color: white; 
+}
+
+/* Table */
+
+.table td {
+  background-color: #343a40; 
+  color: white;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.form-control::placeholder {
+  color: rgb(99, 98, 98); /* Set the placeholder text color to white */
+}
+
+.form-control {
+  background-color: #343a40; 
+  color: white; 
+  border-color: #343a40; 
+}
+
+.form-control:focus {
+  background-color: #272b30; 
+  border-color: #343a40; 
+  color: white; 
+}
+
+.form-control:hover {
+  background-color: #272b30; 
+  border-color: #343a40; 
+  color: white;
 }

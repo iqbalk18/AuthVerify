@@ -13,7 +13,8 @@ function Dashboard() {
       column2: '',
       column3: '',
       column4: '',
-      column5: ''
+      column5: '',
+      column6: ''
     }]);
   };
 
@@ -108,7 +109,6 @@ function Dashboard() {
           </div>
         </div>
       </nav>
-      <button className="btn btn-primary mb-3" onClick={handleAddRow}>Add Row</button>
       <table className="table">
         <thead>
           <tr>
@@ -122,23 +122,71 @@ function Dashboard() {
         </thead>
         <tbody>
         {data.map((row, index) => (
-          <tr>
-            <td>Data 1</td>
-            <td>Data 2</td>
-            <td>Data 3</td>
-            <td>Data 4</td>
-            <td>Data 5</td>
-            <td>Data 6</td>
-                <button
-                  className="btn btn-danger btn-sm"
-                  onClick={() => handleDeleteRow(index)}
-                >
-                  Delete
+          <tr key={index}>
+          <td>
+            <input
+              type="text"
+              className="form-control"
+              placeholder={`Data ${index + 1}`}
+              value={row.column1}
+              onChange={(event) => handleInputChange(event, index, 'column1')}
+            />
+            </td>
+            <td>
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder={`Data ${index + 1}`}
+                  value={row.column2}
+                  onChange={(event) => handleInputChange(event, index, 'column2')}
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder={`Data ${index + 1}`}
+                  value={row.column3}
+                  onChange={(event) => handleInputChange(event, index, 'column3')}
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder={`Data ${index + 1}`}
+                  value={row.column4}
+                  onChange={(event) => handleInputChange(event, index, 'column4')}
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder={`Data ${index + 1}`}
+                  value={row.column5}
+                  onChange={(event) => handleInputChange(event, index, 'column5')}
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder={`Data ${index + 1}`}
+                  value={row.column6}
+                  onChange={(event) => handleInputChange(event, index, 'column6')}
+                />
+              </td>
+              <td>
+                <button className="btn btn-danger btn-sm"onClick={() => handleDeleteRow(index)}>
+                  -
                 </button>
+              </td>
           </tr>
           ))}
         </tbody>
       </table>
+      <button className="btn btn-primary mb-3" onClick={handleAddRow}>Add Row</button>
     </div>
   );
 }
