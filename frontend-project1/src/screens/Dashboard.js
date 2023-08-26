@@ -122,7 +122,6 @@ function Dashboard() {
             <input
               type="text"
               className="form-control table-input"
-              placeholder={`Departure Date ${index + 1}`}
               value={row.column1}
               onChange={(event) => handleInputChange(event, index, 'column1')}
             />
@@ -130,7 +129,6 @@ function Dashboard() {
             <td className="border-right">
               <input type="text"
                   className="form-control table-input"
-                  placeholder={`Departure Time ${index + 1}`}
                   value={row.column2}
                   onChange={(event) => handleInputChange(event, index, 'column2')}
                 />
@@ -139,7 +137,6 @@ function Dashboard() {
                 <input
                   type="text"
                   className="form-control table-input"
-                  placeholder={`Estimated Date ${index + 1}`}
                   value={row.column3}
                   onChange={(event) => handleInputChange(event, index, 'column3')}
                 />
@@ -148,7 +145,6 @@ function Dashboard() {
                 <input
                   type="text"
                   className="form-control table-input"
-                  placeholder={`Estimated Time ${index + 1}`}
                   value={row.column4}
                   onChange={(event) => handleInputChange(event, index, 'column4')}
                 />
@@ -157,7 +153,6 @@ function Dashboard() {
                 <input
                   type="text"
                   className="form-control table-input"
-                  placeholder={`Actual Date ${index + 1}`}
                   value={row.column5}
                   onChange={(event) => handleInputChange(event, index, 'column5')}
                 />
@@ -166,7 +161,6 @@ function Dashboard() {
                 <input
                   type="text"
                   className="form-control table-input"
-                  placeholder={`Actual Time ${index + 1}`}
                   value={row.column6}
                   onChange={(event) => handleInputChange(event, index, 'column6')}
                 />
