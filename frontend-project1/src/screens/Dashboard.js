@@ -14,7 +14,14 @@ function Dashboard() {
       column3: '',
       column4: '',
       column5: '',
-      column6: ''
+      column6: '',
+      column7: '',
+      column8: '',
+      column9: '',
+      column10: '',
+      column11: '',
+      column12: '',
+      column13: ''
     }]);
   };
 
@@ -107,64 +114,39 @@ function Dashboard() {
       <table className="table">
         <thead>
           <tr>
+            <th>Travel Number</th>
+            <th>Travel Status</th>
+            <th>Remark</th>
+            <th>Service Type</th>
+            <th>Destination</th>
             <th>Departure Date</th>
             <th>Departure Time</th>
-            <th>Estimated Date</th>
-            <th>Estimated Time</th>
-            <th>Actual Date</th>
-            <th>Actual Time</th>
+            <th>Estimated Departure Date</th>
+            <th>Estimated Departure Time</th>
+            <th>Actual Departure Date</th>
+            <th>Actual Departure Time</th>
+            <th>Cancel Date</th>
+            <th>Cancel Time</th>
           </tr>
         </thead>
         <tbody>
-        {data.map((row, index) => (
-          <tr key={index}>
-          <td className="border-right">
-            <input
-              type="text"
-              className="form-control table-input"
-              value={row.column1}
-              onChange={(event) => handleInputChange(event, index, 'column1')}
-            />
-            </td>
-            <td className="border-right">
-              <input type="text"
-                  className="form-control table-input"
-                  value={row.column2}
-                  onChange={(event) => handleInputChange(event, index, 'column2')}
-                />
-              </td>
-              <td className="border-right">
-                <input
-                  type="text"
-                  className="form-control table-input"
-                  value={row.column3}
-                  onChange={(event) => handleInputChange(event, index, 'column3')}
-                />
-              </td>
-              <td className="border-right">
-                <input
-                  type="text"
-                  className="form-control table-input"
-                  value={row.column4}
-                  onChange={(event) => handleInputChange(event, index, 'column4')}
-                />
-              </td>
-              <td className="border-right">
-                <input
-                  type="text"
-                  className="form-control table-input"
-                  value={row.column5}
-                  onChange={(event) => handleInputChange(event, index, 'column5')}
-                />
-              </td>
-              <td className="border-right">
-                <input
-                  type="text"
-                  className="form-control table-input"
-                  value={row.column6}
-                  onChange={(event) => handleInputChange(event, index, 'column6')}
-                />
-              </td>
+          {data.map((row, index) => (
+            <tr key={index}>
+              {Array.from({ length: 13 }).map((_, columnIndex) => (
+                <td
+                  className={`border-right ${columnIndex < 6 ? '' : 'border-right'}`}
+                  key={columnIndex}
+                >
+                  <input
+                    type="text"
+                    className="form-control table-input"
+                    value={row[`column${columnIndex + 1}`] || ''}
+                    onChange={(event) =>
+                      handleInputChange(event, index, `column${columnIndex + 1}`)
+                    }
+                  />
+                </td>
+              ))}
               <td>
                 <button className="btn btn-danger btn-sm"onClick={() => handleDeleteRow(index)}>
                   -
